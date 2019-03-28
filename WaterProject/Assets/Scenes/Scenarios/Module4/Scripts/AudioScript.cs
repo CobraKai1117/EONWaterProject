@@ -45,6 +45,7 @@ public class AudioScript : MonoBehaviour
         Listen.Play();
 
         trackCount++;
+       
     }
 
     public void PauseAudio()
