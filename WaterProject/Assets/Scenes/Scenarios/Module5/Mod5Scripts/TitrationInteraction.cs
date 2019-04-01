@@ -5,7 +5,15 @@ using UnityEngine;
 public class TitrationInteraction : MonoBehaviour
 {
     [SerializeField] GameObject BottomButtonPivot;
-   [SerializeField] Quaternion buttonRot;
+    [SerializeField] Quaternion buttonRot;
+    [SerializeField] GameObject TopButtonPivot;
+    [SerializeField] GameObject ObjToMov;
+    [SerializeField, Range(0, 360)] float[] PivotAngles;
+    [Space]
+    [Space]
+    [SerializeField] GameObject PotasJar;
+    [SerializeField] GameObject agitator;
+   
     bool knobRotate;
    // [SerializeField] float knobEulerAngle;
     float knobA;
@@ -14,6 +22,7 @@ public class TitrationInteraction : MonoBehaviour
     float speed = 80f;
     List<float> KnobValues = new List<float>();
    [SerializeField] int Knob;
+    bool JarAppear;
 
     
 
@@ -21,6 +30,9 @@ public class TitrationInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+       // JarAppear = true;
+
+
         Knob = 0;
         knobA = 156.6f;
         knobB = 192.5f;
@@ -35,13 +47,13 @@ public class TitrationInteraction : MonoBehaviour
         Debug.Log(KnobValues[1]);
         Debug.Log(KnobValues[2]);
 
+        Debug.Log(PivotAngles[0]);
+        Debug.Log(PivotAngles[1]);
+        Debug.Log(PivotAngles[2]);
 
-        buttonRot = BottomButtonPivot.transform.rotation;
-     
-        knobA = 156.6f;
-        knobB = 192.5f;
-        knobC = 142.9f;
-       // knobRotate = true;
+
+
+        // knobRotate = true;
         //float speed = 20f;
     }
 
@@ -49,7 +61,9 @@ public class TitrationInteraction : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButton(0)) { knobRotate = true; }
-        if (knobRotate) { KnobMovement(KnobValues[Knob], speed); }
+        if (knobRotate) { KnobMovement(BottomButtonPivot, PivotAngles[Knob], speed); }
+        if (Input.GetKeyDown(KeyCode.G)) { JarAppear = true; }
+        if (JarAppear) { MovePotassiumJar(); }
         
 
    
@@ -58,29 +72,38 @@ public class TitrationInteraction : MonoBehaviour
       
     }
 
-    public void KnobMovement( float knobValue, float speed)
+    public void KnobMovement(GameObject ObjToMov, float pivotAngles, float speed)
     {
-       if (Knob >= KnobValues.Count) { knobRotate = false; }
-        // BottomButtonPivot.transform.RotateAround(BottomButtonPivot.transform.position, new Vector3(0, 0, 1), -20 * Time.deltaTime);
-        BottomButtonPivot.transform.Rotate(0, 0, speed * Time.deltaTime);
-       float  knobEulerAngle = BottomButtonPivot.transform.eulerAngles.z;
+       if (Knob >= PivotAngles.Length) { knobRotate = false; }
+        ObjToMov.transform.Rotate(0, 0, speed * Time.deltaTime);
+       float  knobEulerAngle = ObjToMov.transform.eulerAngles.z;
        
 
-
-      
-
-        if (Mathf.Abs(knobEulerAngle - knobValue) < 1f) 
+        if (Mathf.Abs(knobEulerAngle - pivotAngles) < 1f) 
         {
             Knob++;
             knobRotate = false;
            
         }
 
-
-      
-
+    }
 
 
-       
+
+
+    public void MovePotassiumJar()
+    {
+        PotasJar.transform.position = Vector3.Lerp(PotasJar.transform.position, agitator.transform.position - new Vector3(0, 1.0f, -1.1f), 1 * Time.deltaTime * 3);
+
+        //PotasJar.transform.position + new Vector3((agitator.transform.position.x - .5f), 0, 0), 1 * Time.deltaTime * 3);
+
+        //agitator.transform.position - new Vector3(-.147f, 0, 0)), 1 * Time.deltaTime * 3);
+
+        // - new Vector3(0, .3904078f,0), (1 * Time.deltaTime * 3 ));
+
+       // JarAppear = false;
+
+
+
     }
 }
