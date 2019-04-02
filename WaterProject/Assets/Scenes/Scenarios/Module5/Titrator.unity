@@ -2207,6 +2207,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e574c309a4fce554f9a4c7fe05cf6d6c, type: 3}
+--- !u!1 &413395197 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: b3f6c280d97f25f47bb062c6c2edc529,
+    type: 3}
+  m_PrefabInstance: {fileID: 1956602741}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &424972744
 GameObject:
   m_ObjectHideFlags: 0
@@ -3331,19 +3337,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610257144}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cf543382fefff6949b584cf9edff7d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dropper: {fileID: 937036141}
   cam: {fileID: 1973455317}
-  indicator: {fileID: 2097334111}
-  agitator: {fileID: 0}
-  FlashMat: {fileID: 0}
-  Sample: {fileID: 0}
-  Dropper2: {fileID: 0}
-  DropPos: {fileID: 0}
+  indicator: {fileID: 2007293291}
+  agitator: {fileID: 134848273}
+  FlashMat: {fileID: 2100000, guid: f419b5912e2419041a69956b967e68bb, type: 2}
+  Sample: {fileID: 413395197}
+  Dropper2: {fileID: 799422738}
+  DropPos: {fileID: 2007293290}
 --- !u!114 &610257148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5569,7 +5575,7 @@ MonoBehaviour:
   indicator: {fileID: 2007293291}
   agitator: {fileID: 134848273}
   FlashMat: {fileID: 2100000, guid: f419b5912e2419041a69956b967e68bb, type: 2}
-  Sample: {fileID: 0}
+  Sample: {fileID: 413395197}
   Dropper2: {fileID: 799422738}
   DropPos: {fileID: 2007293290}
 --- !u!1 &983327521
@@ -6880,7 +6886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1031555360, guid: 4858997d2c488344b8abd894270b26c1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.96
+      value: 1.13
       objectReference: {fileID: 0}
     - target: {fileID: 1031555359, guid: 4858997d2c488344b8abd894270b26c1, type: 3}
       propertyPath: m_IsActive

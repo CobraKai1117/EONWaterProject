@@ -26,15 +26,18 @@ public class DropperInteraction : MonoBehaviour
     [SerializeField] GameObject DropPos;
     public static Camera mainCam;
     public static Vector2 prevMousePos;
+    float speed;
+  
 
 
 
     // Start is called before the first frame update
     void Start()
     {
+        speed = 70f;
         interactable = true;
         ColumnDisappear();
-        dropZAx = -164;
+        dropZAx = 52;
 
 
        Dropper2.gameObject.SetActive(true);
@@ -96,7 +99,7 @@ public class DropperInteraction : MonoBehaviour
             float disY = Input.mousePosition.y - posY;
             float disZ = Input.mousePosition.z - posZ;
             Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
-           transform.position = new Vector3(lastPos.x, startPos.y, startPos.z);
+            transform.position = new Vector3(lastPos.x, startPos.y, startPos.z);
 
         }
     } 
@@ -167,23 +170,27 @@ public class DropperInteraction : MonoBehaviour
     {
         //Vector3 newDropPos = dropper.transform.position + new Vector3(0, .005f, 0);
         dropper.transform.position = Vector3.Lerp(dropper.transform.position, DropPos.transform.position, .05f);
-        //RotationStart = true;
+        RotationStart = true;
 
-        dropper.transform.RotateAround(Vector3.zero, Vector3.zero, 200 * Time.deltaTime);
 
         if (RotationStart)
         {
 
-            dropper.transform.RotateAround(Vector3.zero, Vector3.zero, 200 * Time.deltaTime);
+            dropper.transform.Rotate(0, 0, speed * Time.deltaTime);
 
-            /* if (dropper.transform.eulerAngles.z == dropZAx)
-             {
-                 RotationStart = false;
-             } */
+            float RotPoint = dropper.transform.eulerAngles.z;
+            Debug.Log(RotPoint);
+
+            if (Mathf.Abs(RotPoint - dropZAx) < 1)
+            {
+                speed = 0;
+                RotationStart = false;
+            
+            }
 
 
         }
-
+    
     }
 }
 
