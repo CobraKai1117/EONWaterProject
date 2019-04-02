@@ -13,6 +13,9 @@ public class TitrationInteraction : MonoBehaviour
     [Space]
     [SerializeField] GameObject PotasJar;
     [SerializeField] GameObject agitator;
+    [Space]
+    [Space]
+
    
     bool knobRotate;
    // [SerializeField] float knobEulerAngle;
@@ -43,14 +46,8 @@ public class TitrationInteraction : MonoBehaviour
         KnobValues.Add(knobB);
         KnobValues.Add(knobC);
 
-        Debug.Log(KnobValues[0]);
-        Debug.Log(KnobValues[1]);
-        Debug.Log(KnobValues[2]);
 
-        Debug.Log(PivotAngles[0]);
-        Debug.Log(PivotAngles[1]);
-        Debug.Log(PivotAngles[2]);
-
+    
 
 
         // knobRotate = true;
@@ -61,9 +58,11 @@ public class TitrationInteraction : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButton(0)) { knobRotate = true; }
-        if (knobRotate) { KnobMovement(BottomButtonPivot, PivotAngles[Knob], speed); }
+       // if (knobRotate) { KnobMovement(BottomButtonPivot, PivotAngles[Knob], speed); }
         if (Input.GetKeyDown(KeyCode.G)) { JarAppear = true; }
         if (JarAppear) { MovePotassiumJar(); }
+
+  
         
 
    
@@ -93,7 +92,7 @@ public class TitrationInteraction : MonoBehaviour
 
     public void MovePotassiumJar()
     {
-        PotasJar.transform.position = Vector3.Lerp(PotasJar.transform.position, agitator.transform.position - new Vector3(0, 1.0f, -1.1f), 1 * Time.deltaTime * 3);
+       // PotasJar.transform.position = Vector3.Lerp(PotasJar.transform.position, agitator.transform.position - new Vector3(0, 1.0f, -1.1f), 1 * Time.deltaTime * 3);
 
         //PotasJar.transform.position + new Vector3((agitator.transform.position.x - .5f), 0, 0), 1 * Time.deltaTime * 3);
 
@@ -106,4 +105,6 @@ public class TitrationInteraction : MonoBehaviour
 
 
     }
+
+
 }

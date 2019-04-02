@@ -37,6 +37,7 @@ ModelImporter:
     4300004: MeterFacePlate
     4300006: MeterNeedle
     4300008: MainBody
+    2186277476908879412: ImportLogs
   externalObjects:
   - first:
       type: UnityEngine:Material
