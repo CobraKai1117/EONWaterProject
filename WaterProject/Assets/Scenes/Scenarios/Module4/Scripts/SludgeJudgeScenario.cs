@@ -787,7 +787,7 @@ public class SludgeJudgeScenario : MonoBehaviour, ITrackableEventHandler
             if (currentTime >= sJExamineTransTime)
             {
                 break;
-            }
+            } 
 
             yield return null;
         }
