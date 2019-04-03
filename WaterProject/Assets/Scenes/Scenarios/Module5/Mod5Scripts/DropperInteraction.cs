@@ -19,6 +19,8 @@ public class DropperInteraction : MonoBehaviour
     [SerializeField] GameObject DropOgPos;
     [Space]
     [Space]
+    [SerializeField] SolutionScript SolutionJarScript;
+   
 
     //[SerializeField, Range(0,360)] float[] PivotAngles;
 
@@ -36,9 +38,16 @@ public class DropperInteraction : MonoBehaviour
     public static Camera mainCam;
     public static Vector2 prevMousePos;
     float speed;
+    float speed2;
     int dropCount = 0;
     float T = 0f;
     public SolutionScript MoveSolution;
+    int WaterDropRun;
+    bool FuncRun;
+   float ang;
+    float angleRot;
+    float RotTrans;
+
 
 
 
@@ -48,10 +57,14 @@ public class DropperInteraction : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         speed = 70f;
         interactable = true;
         ColumnAppear();
         dropZAx = 52;
+        WaterDropRun = 0;
+        speed2 = 0;
+
 
 
 
@@ -67,9 +80,29 @@ public class DropperInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if (FuncRun) { MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f, 50f,70f); }
         //GlobalFunctions.ColorFlash(FlashMat, Color.yellow, 0.1f, 0.24f);
 
         Vector3 screenPos = cam.WorldToScreenPoint(Input.mousePosition);
+        if (WaterDropRun == 1)
+        {
+            speed = 70f;
+            RotateObj(dropper, 100,dropper.transform.eulerAngles.z);
+            float RotTrans = dropper.transform.eulerAngles.z;
+           
+            if (Math.Abs(RotTrans- 180) <2)
+            {
+                WaterDropRun++;
+                speed = 0;
+
+            }
+            
+
+            Debug.Log("ROT TIME" + RotTrans);
+            Debug.Log("ANGLE ROBOT " + angleRot);
+           
+           
+        }
 
         // Debug.Log("The target is" + screenPos.x + "pixels from the left");
 
@@ -190,6 +223,7 @@ public class DropperInteraction : MonoBehaviour
         {
             ColumnDisappear();
             interactable = false;
+            Debug.Log("TEST");
 
             // Invoke("MoveDrop", .2f);  // Waits a small amount of time before running MoveDrop function
         }
@@ -197,45 +231,69 @@ public class DropperInteraction : MonoBehaviour
         if (distBetweenTwoPoints <= 1 && pointA == dropper.transform.position && pointB == agitator.transform.position)
         {
             interactable = false;
-            Invoke("MoveDrop", .2f);
+            // Invoke("MoveDrop", .2f);
+            MoveDrop(dropper.transform.position, DropPos.transform.position, dropper, .5f);
         }
 
     }
 
-    public void MoveDrop() // Program Lerps dropper closer to solution
+    public void MoveDrop(Vector3 startPos, Vector3 endPos, GameObject objToMov, float rate) // Program Lerps dropper closer to solution
     {
-        //Vector3 newDropPos = dropper.transform.position + new Vector3(0, .005f, 0);
-        dropper.transform.position = Vector3.Lerp(dropper.transform.position, DropPos.transform.position, .05f);
-        RotationStart = true;
 
+        //Vector3 newDropPos = dropper.transform.position + new Vector3(0, .005f, 0);
+        // dropper.transform.position = Vector3.Lerp(dropper.transform.position, DropPos.transform.position, .05f);
+
+        objToMov.transform.position = Vector3.Lerp(startPos, endPos, rate);
+
+        if (WaterDropRun == 0)
+        {
+            RotateObj(dropper, 50,dropper.transform.eulerAngles.z);
+        }
+        
+    }
+
+    public void RotateObj(GameObject RotObj, float ang, float RotPoint)
+    {
+       RotationStart = true;
 
         if (RotationStart)
         {
-            dropper.transform.Rotate(0, 0, speed * Time.deltaTime); // This rotates dropper so it properly faces solution
+            // speed = 70f;
+            Debug.Log(speed);
 
-            float RotPoint = dropper.transform.eulerAngles.z;
-            // Debug.Log(RotPoint);
 
-            if (Mathf.Abs(RotPoint - dropZAx) < 1)
+           RotObj.transform.Rotate(0, 0, speed * Time.deltaTime); // This rotates dropper so it properly faces solution
+
+            //float RotPoint = RotObj.transform.eulerAngles.z;
+            RotTrans = RotPoint;
+            angleRot = ang;
+            Debug.Log(RotationStart);
+
+            if (Mathf.Abs(RotPoint - ang) < 2 )
             {
-                speed = 0;
+                // speed = 0;
                 RotationStart = false; // Ensures that rotation stops once dropper is rotated at a certain angle to solution
-                WaterDrop();
+                if (RotationStart == false) { speed = 0; }
+                Debug.Log(RotationStart);
+
+                if (WaterDropRun == 0)
+                {
+                    WaterDrop();
+                }
 
             }
 
-
         }
-
     }
+
+    
 
     public void WaterDrop() // Adds drops from dropper to solution
     {
+        
 
         if (Input.GetMouseButtonDown(0) && dropCount < 4)
         {
-
-
 
             H20drop = Instantiate(H20drop, dropper.transform.position, dropper.transform.rotation);
             H20drop.transform.position = Vector3.Lerp(dropper.transform.position, WaterDropPos.transform.position, 30 * Time.deltaTime);
@@ -249,12 +307,20 @@ public class DropperInteraction : MonoBehaviour
 
        if (dropCount >=4)
         {
-           // MoveSolution.interactable = true;
-          //  distancetoSample(dropper.transform.position, DropOgPos.transform.position);
+           MoveSolution.interactable = true;
+          MoveSolution.OnMouseDown();
+           MoveSolution.OnMouseDrag();
+           // distancetoSample(dropper.transform.position, DropOgPos.transform.position);
+            FlashAppear(SolutionJar);
+            // distancetoSample(dropper.transform.position);
+            // speed = 70f;
+            // FuncRun = true;
+            WaterDropRun++;
+            //RotateObj(dropper, 50);
+            MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f);
+            
         }
-
-        
-
+       
     }
 
     public void FlashAppear(GameObject ObjWFlash)
