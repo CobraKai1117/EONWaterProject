@@ -96,11 +96,7 @@ public class DropperInteraction : MonoBehaviour
                 speed = 0;
 
             }
-            
-
-            Debug.Log("ROT TIME" + RotTrans);
-            Debug.Log("ANGLE ROBOT " + angleRot);
-           
+ 
            
         }
 
@@ -131,25 +127,18 @@ public class DropperInteraction : MonoBehaviour
         if (interactable)
         {
             FlashDisappear(Dropper2);
-
-           
+            
             startPos = transform.position;
-            Debug.Log(startPos);
-          
-            dist = Camera.main.WorldToScreenPoint(transform.position);
-
            
-
+            dist = Camera.main.WorldToScreenPoint(transform.position);
+            
             posX = Input.mousePosition.x - dist.x;
-
-          
+            
             posY = Input.mousePosition.y - dist.y;
-
-            Debug.Log(posY);
-
+            
             posZ = Input.mousePosition.z - dist.z;
 
-            Debug.Log(posZ);
+           
 
 
         }
