@@ -20,7 +20,8 @@ public class DropperInteraction : MonoBehaviour
     [Space]
     [Space]
     [SerializeField] SolutionScript SolutionJarScript;
-   
+    [SerializeField] ParticleSystem WaterPart;
+  
 
     //[SerializeField, Range(0,360)] float[] PivotAngles;
 
@@ -47,17 +48,76 @@ public class DropperInteraction : MonoBehaviour
    float ang;
     float angleRot;
     float RotTrans;
+    ParticleSystem Test;
+
+    float Timer;
+
+    float test;
+
+    bool TimerRun;
+
+    bool WaterWait;
+
+    ParticleSystem C;
+
+    [SerializeField]GameObject H20Part;
+
+    [SerializeField] Color32 WaterColor1;
+    [SerializeField] Color32 WaterColor2;
+    [SerializeField] Color32 WaterColor3;
+    [SerializeField] Color32 WaterColor4;
+    [SerializeField] Color32 WaterColor5;
+
+   byte RNew = (byte)35.75f;
+
+  
+    sbyte GNew = (sbyte)-6.75f;
+    byte BNew = (byte)60.25f;
+
+    Renderer Bob;
 
 
 
+    float Timer2;
 
+    int timesClicked;
+    
+    List<Color> WaterMaterials = new List<Color>();
 
-
+    Material CurrentWaterColor;
 
     // Start is called before the first frame update
     void Start()
-    {
-        
+
+       
+    { //byte RNew = (byte)35.75f;
+
+        Renderer Bob = H20Part.GetComponent<Renderer>();
+        MeshRenderer Cat = H20Part.GetComponent<MeshRenderer>();
+
+
+        WaterMaterials.Add(WaterColor1);
+        WaterMaterials.Add(WaterColor2);
+        WaterMaterials.Add(WaterColor3);
+        WaterMaterials.Add(WaterColor4);
+        WaterMaterials.Add(WaterColor5);
+
+        dropCount = 1;
+
+
+
+        //  Bob.material.color = WaterMaterials[4];
+
+        Bob.material.color = WaterMaterials[dropCount];
+
+   
+
+        //MESH RENDERER IS WHAT I NEED and the shared material from that
+
+
+
+        Timer = 0;
+        timesClicked = 1;
         speed = 70f;
         interactable = true;
         ColumnAppear();
@@ -65,11 +125,17 @@ public class DropperInteraction : MonoBehaviour
         WaterDropRun = 0;
         speed2 = 0;
 
+ 
 
+        Test = WaterPart.GetComponent<ParticleSystem>();
+        Test.Pause(true);
+       
 
+ //     var y = Test.shape;
 
+  //    y.position = new Vector3(.29f, 0, 0);
 
-
+      
 
         FlashAppear(Dropper2);
         FlashDisappear(SolutionJar);
@@ -80,11 +146,70 @@ public class DropperInteraction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Bob.material.color = WaterMaterials[dropCount];
+
+
+        test = Time.deltaTime;
+
+
+        if (TimerRun)
+        {
+            
+            //C = Instantiate(Test);
+            C.Play();
+            Timer += test;
+         
+            Debug.Log(Timer);
+
+            // WaterMaterial = new Color(143, 241, 0);
+
+            if (Timer > 1.0f)
+            {
+                TimerRun = false;
+                C.IsAlive(false);
+                Destroy(C.gameObject);
+                timesClicked = 1;
+                Debug.Log("TIMER 2" + Timer);
+                ResetTimer(Timer);
+           
+                dropCount++;
+                Debug.Log(dropCount + "DROP COUNT");
+                Debug.Log(WaterMaterials[dropCount] + "DROP COUNT");
+               
+               
+            }
+            
+        }
+
+
+    if (WaterWait)
+        {
+            Debug.Log(Timer2);
+           
+            Timer2 += test;
+            if (Timer2 >= 0.5f && WaterDropRun == 1)
+            {
+                MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f );
+                speed = 70f;
+                RotateObj(dropper, 100, dropper.transform.eulerAngles.z);
+                float RotTrans = dropper.transform.eulerAngles.z;
+
+                if (Math.Abs(RotTrans - 180) < 2)
+                {
+                    WaterDropRun++;
+                    speed = 0;
+                    WaterWait = false;
+
+                }
+            }
+        } 
+     // test = Time.deltaTime;
+     
         //if (FuncRun) { MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f, 50f,70f); }
         //GlobalFunctions.ColorFlash(FlashMat, Color.yellow, 0.1f, 0.24f);
 
         Vector3 screenPos = cam.WorldToScreenPoint(Input.mousePosition);
-        if (WaterDropRun == 1)
+      /*  if (WaterDropRun == 1)
         {
             speed = 70f;
             RotateObj(dropper, 100,dropper.transform.eulerAngles.z);
@@ -98,7 +223,9 @@ public class DropperInteraction : MonoBehaviour
             }
  
            
-        }
+        } */
+
+   
 
         // Debug.Log("The target is" + screenPos.x + "pixels from the left");
 
@@ -118,6 +245,8 @@ public class DropperInteraction : MonoBehaviour
         distancetoSample(dropper.transform.position, agitator.transform.position);
         // T += Time.deltaTime;
         //Debug.Log(T);
+
+  
 
     }
 
@@ -150,7 +279,6 @@ public class DropperInteraction : MonoBehaviour
         {
 
             float disX = Input.mousePosition.x - posX;
-            Debug.Log(disX + "FLOAT");
             float disY = Input.mousePosition.y - posY;
             float disZ = Input.mousePosition.z - posZ;
             Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
@@ -212,7 +340,7 @@ public class DropperInteraction : MonoBehaviour
         {
             ColumnDisappear();
             interactable = false;
-            Debug.Log("TEST");
+          
 
             // Invoke("MoveDrop", .2f);  // Waits a small amount of time before running MoveDrop function
         }
@@ -220,18 +348,15 @@ public class DropperInteraction : MonoBehaviour
         if (distBetweenTwoPoints <= 1 && pointA == dropper.transform.position && pointB == agitator.transform.position)
         {
             interactable = false;
-            // Invoke("MoveDrop", .2f);
+            // Invoke("MoveDrop", .2f); 
+           // WaterWait = true;
             MoveDrop(dropper.transform.position, DropPos.transform.position, dropper, .5f);
         }
 
     }
 
-    public void MoveDrop(Vector3 startPos, Vector3 endPos, GameObject objToMov, float rate) // Program Lerps dropper closer to solution
+    public void MoveDrop(Vector3 startPos, Vector3 endPos, GameObject objToMov, float rate) 
     {
-
-        //Vector3 newDropPos = dropper.transform.position + new Vector3(0, .005f, 0);
-        // dropper.transform.position = Vector3.Lerp(dropper.transform.position, DropPos.transform.position, .05f);
-
         objToMov.transform.position = Vector3.Lerp(startPos, endPos, rate);
 
         if (WaterDropRun == 0)
@@ -247,26 +372,23 @@ public class DropperInteraction : MonoBehaviour
 
         if (RotationStart)
         {
-            // speed = 70f;
-            Debug.Log(speed);
-
-
            RotObj.transform.Rotate(0, 0, speed * Time.deltaTime); // This rotates dropper so it properly faces solution
 
             //float RotPoint = RotObj.transform.eulerAngles.z;
             RotTrans = RotPoint;
             angleRot = ang;
-            Debug.Log(RotationStart);
+         
 
             if (Mathf.Abs(RotPoint - ang) < 2 )
             {
                 // speed = 0;
                 RotationStart = false; // Ensures that rotation stops once dropper is rotated at a certain angle to solution
                 if (RotationStart == false) { speed = 0; }
-                Debug.Log(RotationStart);
+           
 
                 if (WaterDropRun == 0)
                 {
+                   
                     WaterDrop();
                 }
 
@@ -279,34 +401,51 @@ public class DropperInteraction : MonoBehaviour
 
     public void WaterDrop() // Adds drops from dropper to solution
     {
-        
+        //ClickSensor = true;
 
-        if (Input.GetMouseButtonDown(0) && dropCount < 4)
+      
+
+   
+        var y = Test.shape;
+
+        y.position = new Vector3(-0.008f, 0, 0);
+
+        // Test.Play();
+
+
+        if (Input.GetMouseButtonDown(0) && timesClicked ==1) 
         {
+            Debug.Log(Timer);
+            TimerRun = true;
+            C = Instantiate(Test);
+            Timer = 0;
+            timesClicked++;
+          
+           // C.Play();
+            //dropCount++;
+            
 
-            H20drop = Instantiate(H20drop, dropper.transform.position, dropper.transform.rotation);
-            H20drop.transform.position = Vector3.Lerp(dropper.transform.position, WaterDropPos.transform.position, 30 * Time.deltaTime);
+      
+          //  H20drop = Instantiate(H20drop, dropper.transform.position, dropper.transform.rotation);
+          //  H20drop.transform.position = Vector3.Lerp(dropper.transform.position, WaterDropPos.transform.position, 30 * Time.deltaTime);
+            
+           
 
-
-            Debug.Log(dropCount);
-
-            dropCount++;
-
+            //Test.Pause();
         }
 
        if (dropCount >=4)
         {
            MoveSolution.interactable = true;
           MoveSolution.OnMouseDown();
-           MoveSolution.OnMouseDrag();
-           // distancetoSample(dropper.transform.position, DropOgPos.transform.position);
+           MoveSolution.OnMouseDrag();  
             FlashAppear(SolutionJar);
-            // distancetoSample(dropper.transform.position);
-            // speed = 70f;
-            // FuncRun = true;
-            WaterDropRun++;
-            //RotateObj(dropper, 50);
-            MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f);
+                WaterDropRun++;
+            Timer2 = 0;
+            Timer = 0;
+            WaterWait = true;
+           // Timer = 0;
+          //  MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f);
             
         }
        
@@ -320,6 +459,13 @@ public class DropperInteraction : MonoBehaviour
     public void FlashDisappear(GameObject FlashRem)
     {
         FlashRem.SetActive(false);
+    }
+
+
+    public void ResetTimer(float time)
+    {
+        time = 0f;
+        
     }
 }
 
