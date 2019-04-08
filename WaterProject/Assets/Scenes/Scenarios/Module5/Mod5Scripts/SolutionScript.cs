@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SolutionScript : MonoBehaviour
-{
+{[SerializeField] GameObject WaterTransform;
+    [SerializeField] GameObject ScriptReference;
     public bool interactable;
     Vector3 dist;
     Vector3 startPos;
@@ -13,6 +14,7 @@ public class SolutionScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ScriptReference.GetComponent<DropperInteraction>().FlashDisappear(WaterTransform);
        // interactable = true;
         
     }
@@ -26,34 +28,29 @@ public class SolutionScript : MonoBehaviour
     public void OnMouseDown()
     {
         if (interactable)
-        {
-           
-
-           
+        {  
             startPos = transform.position;
-            Debug.Log(startPos);
-            
 
+            if (startPos == WaterTransform.transform.position)
+            {
+                //DropperInteraction.FlashDisappear(WaterTransform);
+                ScriptReference.GetComponent<DropperInteraction>().FlashDisappear(WaterTransform);
+            }
+       
             dist = Camera.main.WorldToScreenPoint(transform.position);
 
             Vector3 dist2 = Camera.main.WorldToScreenPoint(transform.position);
-            Debug.Log("DISTANCE" + dist);
-
-            Debug.Log("DISTANCE 2" + dist2);
+      
 
             posX = Input.mousePosition.x - dist.x;
 
-            Debug.Log("MOUSE INPUT" + Input.mousePosition.x);
-
-            Debug.Log(posX);
 
             posY = Input.mousePosition.y - dist.y;
 
-            Debug.Log(posY);
-
             posZ = Input.mousePosition.z - dist.z;
 
-            Debug.Log(posZ);
+            Debug.Log(startPos);
+
 
 
         }
@@ -65,7 +62,6 @@ public class SolutionScript : MonoBehaviour
         {
 
             float disX = Input.mousePosition.x - posX;
-            Debug.Log(disX + "FLOAT");
             float disY = Input.mousePosition.y - posY;
             float disZ = Input.mousePosition.z - posZ;
             Vector3 lastPos = Camera.main.ScreenToWorldPoint(new Vector3(disX, disY, disZ));
