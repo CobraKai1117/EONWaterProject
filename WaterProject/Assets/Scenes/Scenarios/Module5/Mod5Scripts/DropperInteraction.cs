@@ -9,7 +9,6 @@ public class DropperInteraction : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] Transform indicator;
     [SerializeField] GameObject agitator;
-    [SerializeField] Material FlashMat;
     [SerializeField] GameObject Sample;
     [SerializeField] GameObject Dropper2;
     [SerializeField] GameObject H20drop;
@@ -23,12 +22,14 @@ public class DropperInteraction : MonoBehaviour
     [SerializeField] SolutionScript SolutionJarScript;
     [SerializeField] ParticleSystem WaterPart;
     [SerializeField] GameObject WaterDropPart;
+    [SerializeField] GameObject JarDropPos;
+    [SerializeField] GameObject WaterJar;
 
 
     //[SerializeField, Range(0,360)] float[] PivotAngles;
 
     bool interactable;
-
+    bool MoveJar;
     Vector3 dist;
     Vector3 startPos;
     float posX;
@@ -41,16 +42,11 @@ public class DropperInteraction : MonoBehaviour
     public static Camera mainCam;
     public static Vector2 prevMousePos;
     float speed;
-    float speed2;
-    int dropCount = 0;
-    float T = 0f;
     public SolutionScript MoveSolution;
     int WaterDropRun;
-    bool FuncRun;
-    float ang;
     float angleRot;
     float RotTrans;
-    ParticleSystem Test;
+
 
     float Timer;
 
@@ -60,11 +56,10 @@ public class DropperInteraction : MonoBehaviour
 
     bool WaterWait;
 
-    //bool FirstRun;
 
     int RunCount;
 
-    ParticleSystem C;
+
 
     [SerializeField] GameObject H20Part;
 
@@ -85,19 +80,16 @@ public class DropperInteraction : MonoBehaviour
 
     List<Color> WaterMaterials = new List<Color>();
 
-    Material CurrentWaterColor;
-
     // Start is called before the first frame update
     void Start()
     {
-        //  FirstRun = true;
+     
         WaterMaterials.Add(WaterColor1);
         WaterMaterials.Add(WaterColor2);
         WaterMaterials.Add(WaterColor3);
         WaterMaterials.Add(WaterColor4);
         WaterMaterials.Add(WaterColor5);
 
-        dropCount = 0;
 
         Timer = 0;
         timesClicked = 1;
@@ -106,12 +98,9 @@ public class DropperInteraction : MonoBehaviour
         ColumnAppear();
         dropZAx = 52;
         WaterDropRun = 0;
-        speed2 = 0;
+  
 
 
-
-        Test = WaterPart.GetComponent<ParticleSystem>();
-        Test.Pause(true);
 
         FlashAppear(Dropper2);
         FlashDisappear(SolutionJar);
@@ -132,9 +121,6 @@ public class DropperInteraction : MonoBehaviour
 
         if (TimerRun)
         {
-
-            //C = Instantiate(Test);
-            C.Play();
             Timer += test;
 
             if (Timer > 1.0f)
@@ -142,8 +128,6 @@ public class DropperInteraction : MonoBehaviour
                 Renderer WaterCol = H20Part.GetComponent<Renderer>();
 
                 TimerRun = false;
-                C.IsAlive(false);
-                Destroy(C.gameObject);
                 timesClicked = 1;
                 Debug.Log("TIMER 2" + Timer);
                 ResetTimer(Timer);
@@ -399,11 +383,6 @@ public class DropperInteraction : MonoBehaviour
 
     public void WaterDrop(int dropCount) // Adds drops from dropper to solution
     {
-
-        var y = Test.shape;
-
-        y.position = new Vector3(-0.008f, 0, 0);
-
         if (count < dropCount)
         {
 
@@ -411,7 +390,6 @@ public class DropperInteraction : MonoBehaviour
             {
                 Debug.Log(Timer);
                 TimerRun = true;
-                C = Instantiate(Test);
                 Timer = 0;
                 timesClicked++;
                 
@@ -424,6 +402,11 @@ public class DropperInteraction : MonoBehaviour
 
         if (count >= dropCount)
         {
+           /* MoveJar = true;
+            if (MoveJar)
+            { MoveDrop(SolutionJar.transform.position, JarDropPos.transform.position, WaterJar, .8f *Time.deltaTime); } */
+
+
             MoveSolution.interactable = true;
             MoveSolution.OnMouseDown();
             MoveSolution.OnMouseDrag();
