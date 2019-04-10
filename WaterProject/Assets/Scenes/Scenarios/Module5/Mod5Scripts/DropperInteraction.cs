@@ -22,6 +22,7 @@ public class DropperInteraction : MonoBehaviour
     [Space]
     [SerializeField] SolutionScript SolutionJarScript;
     [SerializeField] ParticleSystem WaterPart;
+    [SerializeField] GameObject WaterDropPart;
 
 
     //[SerializeField, Range(0,360)] float[] PivotAngles;
@@ -80,6 +81,8 @@ public class DropperInteraction : MonoBehaviour
     int timesClicked;
     int count;
 
+    public static GameObject WaterDroplet;
+
     List<Color> WaterMaterials = new List<Color>();
 
     Material CurrentWaterColor;
@@ -99,7 +102,7 @@ public class DropperInteraction : MonoBehaviour
         Timer = 0;
         timesClicked = 1;
         speed = 70f;
-        interactable = true;
+        //interactable = true;
         ColumnAppear();
         dropZAx = 52;
         WaterDropRun = 0;
@@ -411,6 +414,9 @@ public class DropperInteraction : MonoBehaviour
                 C = Instantiate(Test);
                 Timer = 0;
                 timesClicked++;
+                
+                WaterDroplet = Instantiate(WaterDropPart, dropper.transform.position, WaterDropPart.transform.rotation);
+               
 
             }
 
