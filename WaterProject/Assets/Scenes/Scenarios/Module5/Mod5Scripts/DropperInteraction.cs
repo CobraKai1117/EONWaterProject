@@ -175,17 +175,20 @@ public class DropperInteraction : MonoBehaviour
 
         if (WaterWait)
         {
-            Debug.Log(Timer2);
-
+         
             Timer2 += test;
             if (Timer2 >= 0.5f && WaterDropRun == 1)
             {
                 MoveDrop(dropper.transform.position, DropOgPos.transform.position, dropper, 1f);
-                speed = 70f;
-                RotateObj(dropper, 100, dropper.transform.eulerAngles.z);
-                float RotTrans = dropper.transform.eulerAngles.z;
+                speed = -70f;
+                //float RotTrans = ParentOfWaterDropper.transform.eulerAngles.z;
 
-                if (Math.Abs(RotTrans - 180) < 2)
+                RotateObj(ParentOfWaterDropper, 100, ParentOfWaterDropper.transform.eulerAngles.z);
+                float RotTrans = ParentOfWaterDropper.transform.eulerAngles.z;
+
+                Debug.Log(RotTrans);
+
+                if (Math.Abs(RotTrans - 2) < 2)
                 {
                     WaterDropRun++;
                     speed = 0;
@@ -431,6 +434,7 @@ public class DropperInteraction : MonoBehaviour
 
     public void FlashAppear(GameObject ObjWFlash)
     {
+        interactable = true;
         ObjWFlash.SetActive(true);
     }
 
