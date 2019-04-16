@@ -53,7 +53,7 @@ public class GlobalFunctions : MonoBehaviour
         return false;
     }
 
-    //Takes a touch on the screen, and converts it into a raycast into the scene
+    //Takes a touch on the screen, and converts it into a raaycast into the scene
     public static RaycastHit DetectTouch(MonoBehaviour calledFrom, Vector2 swipeDistances)
     {
         RaycastHit hit = new RaycastHit();
