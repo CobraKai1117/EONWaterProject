@@ -13,6 +13,13 @@ public class BottleScript : MonoBehaviour
     [SerializeField] GameObject ProbePt;
     [SerializeField] GameObject MoveDownPt;
     [SerializeField] GameObject MoveRightPt;
+    [SerializeField] GameObject PH7LidPt;
+    [SerializeField] GameObject PH10LidPt;
+    [SerializeField] GameObject PH7LidTop;
+    [SerializeField] GameObject PH10LidTop;
+    [SerializeField] GameObject PH7LidOgPos;
+    [SerializeField] GameObject PH10LidOgPos;
+    [SerializeField] GameObject SolutionWaterPt;
     [SerializeField] float lerpTime;
 
     [SerializeField] bool lerping;
@@ -45,15 +52,14 @@ public class BottleScript : MonoBehaviour
             switch (count)
             {
                 case 0:
-
-                    LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
-
-                    if (0.4f * lerpTime >= 1)
+                    LerpObj(PH7LidTop, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4f * lerpTime >=1)
                     {
                         count++;
                         lerpTime = 0;
                     }
                     break;
+
 
                 case 1:
 
@@ -78,12 +84,13 @@ public class BottleScript : MonoBehaviour
                     break;
 
                 case 3:
+
                     LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
-                    if (0.4 * lerpTime >=1)
+
+                    if (0.4f * lerpTime >= 1)
                     {
                         count++;
                         lerpTime = 0;
-                        
                     }
                     break;
 
@@ -93,11 +100,21 @@ public class BottleScript : MonoBehaviour
                     {
                         count++;
                         lerpTime = 0;
+                        
+                    }
+                    break;
+
+                case 5:
+                    LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        count++;
+                        lerpTime = 0;
                     }
                     break;
 
 
-                case 5:
+                case 6:
                     LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
                     if (0.4 * lerpTime >=1)
                     {
@@ -107,17 +124,27 @@ public class BottleScript : MonoBehaviour
 
                     break;
 
-
-                case 6:
-                    LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
-                    if (0.4 * lerpTime >=1)
-                    {
-                        count++;
-                        lerpTime = 0;
-                    }
-                    break;
-
                 case 7:
+                    LerpObj(PH7LidTop, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        PH7LidTop.transform.parent = PH7Bottle.transform;
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                    //DIFFERENT BOTTLE
+                case 8:
+                    LerpObj(PH10LidTop, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                case 9:
                     LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
                     if (0.4 * lerpTime >=1)
                     {
@@ -127,7 +154,7 @@ public class BottleScript : MonoBehaviour
                     break;
 
 
-                case 8:
+                case 10:
                     LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
                     {
                         if (0.4 * lerpTime >=1)
@@ -140,7 +167,7 @@ public class BottleScript : MonoBehaviour
                     break;
 
 
-                case 9:
+                case 11:
                     LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
 
                     if (0.4 * lerpTime >=1)
@@ -151,23 +178,81 @@ public class BottleScript : MonoBehaviour
 
                     break;
 
-                case 10:
+                case 12:
                     LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
-                    if (0.4 * lerpTime > 1)
+                    if (0.4 * lerpTime >= 1)
                     {
                         count++;
                         lerpTime = 0;
                     }
                     break;
 
-                case 11:
+                case 13:
                     LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
-                    if (0.4 * lerpTime > 1)
+                    if (0.4 * lerpTime >= 1)
                     {
                         count++;
                         lerpTime = 0;
                     }
                     break;
+
+
+                case 14:
+                    LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
+                     if (0.4 * lerpTime >= 1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                case 15:
+                    LerpObj(PH10LidTop, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        PH10LidTop.transform.parent = PH10Bottle.transform;
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+
+                case 16:
+                    LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
+                    if(0.4 * lerpTime >=1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                case 17:
+                    LerpObj(PH7Bottle, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >= 1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                case 18:
+                    LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+
+                case 19:
+                    LerpObj(PH10Bottle, ListOfPoints[count], .4f * lerpTime);
+                    if (0.4 * lerpTime >=1)
+                    {
+                        count++;
+                        lerpTime = 0;
+                    }
+                    break;
+                
                
             }
 
